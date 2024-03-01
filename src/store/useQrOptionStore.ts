@@ -32,7 +32,7 @@ export const useQrOptionsStore = create<QrOptionsStore>((set) => ({
 		width: 30,
 		height: 30,
 		ecLevel: 'M',
-		eyeRadius: 0,
+		eyeRadius: 2,
 		logoPadding: 0.8,
 		logoPaddingStyle: 'circle',
 	},

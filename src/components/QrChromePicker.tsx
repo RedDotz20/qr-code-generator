@@ -55,8 +55,6 @@ export default function QrChromePicker({ variant }: QrChromePickerProps) {
 		}
 	};
 
-	console.log(showPicker, currentPicker);
-
 	return (
 		<div className="flex gap-2 justify-center items-center">
 			{colorOptions.map((item) => {
@@ -73,9 +71,7 @@ export default function QrChromePicker({ variant }: QrChromePickerProps) {
 							borderColor={isActive ? 'blue.500' : undefined}
 							colorScheme="blue"
 							size="sm"
-							onClick={() => {
-								togglePicker(item.variant);
-							}}
+							onClick={() => togglePicker(item.variant)}
 						>
 							{item.variantName}
 						</Button>
@@ -90,23 +86,6 @@ export default function QrChromePicker({ variant }: QrChromePickerProps) {
 					</div>
 				);
 			})}
-			{/* <Button
-				colorScheme="blue"
-				size="sm"
-				onClick={() => {
-					togglePicker(variant);
-					console.log(currentPicker, showPicker);
-				}}
-			>
-				{variantName[variant]}
-			</Button>
-
-			{showPicker && currentPicker === variant && (
-				<ChromePicker
-					className="absolute top-8 z-40"
-					{...rest}
-				/>
-			)} */}
 		</div>
 	);
 }

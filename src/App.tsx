@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { FaQrcode } from 'react-icons/fa6';
 import {
@@ -9,39 +8,42 @@ import {
 	InputGroup,
 	InputLeftElement,
 } from '@chakra-ui/react';
-import { useImageUpload } from './hooks/useImageUpload';
-import { useDebounce } from './hooks/useDebounceValue';
+import { useImageUploadStore } from './store/useImageUpload';
 import { useQrOptionsStore } from './store/useQrOptionStore';
 import { useColorPicker } from './store/useQrColorPicker';
+import { useQrValue } from './hooks/useQrValue';
 
 import ImageFileUpload from './components/ImageFileUpload';
 import QrOptions from './components/QrOptions';
 
-type inputEvent = React.ChangeEvent<HTMLInputElement>;
-
 export default function App() {
-	const [qrvalue, setqrvalue] = useState('');
-	const { debouncedValue } = useDebounce(qrvalue);
-
-	const color = useColorPicker();
+	const qrValue = useQrValue();
 	const option = useQrOptionsStore();
-	const qrImage = useImageUpload();
-
-	const handleQrChange = (event: inputEvent) => {
-		setqrvalue(event.target.value);
-	};
+	const image = useImageUploadStore();
+	const color = useColorPicker();
 
 	return (
 		<Box
 			as="main"
-			className="min-h-screen items-center justify-center p-2"
+			minH="100vh"
+			display="flex"
+			flexDirection="column"
+			alignItems="center"
+			justifyContent="center"
+			p="2"
 		>
-			<Heading className="font-semibold">QR Code Generator</Heading>
+			<Heading fontWeight="semibold">QR Code Generator</Heading>
 			<Flex
 				flexWrap="wrap"
 				justifyContent="center"
 			>
-				<div className="flex flex-col items-center p-4 gap-2">
+				<Box
+					display="flex"
+					flexDirection="column"
+					alignItems="center"
+					p="4"
+					gap="2"
+				>
 					<Heading
 						as="h6"
 						size="sm"
@@ -49,11 +51,11 @@ export default function App() {
 						Preview
 					</Heading>
 					<QRCode
-						value={debouncedValue}
+						value={qrValue.value as string}
 						qrStyle="dots"
 						bgColor={color.bgColor}
 						fgColor={color.fgColor}
-						logoImage={qrImage.currentImage ? qrImage.currentImage : undefined}
+						logoImage={image.currentImage ? image.currentImage : undefined}
 						logoWidth={option.qrOptions.width}
 						logoHeight={option.qrOptions.height}
 						ecLevel="M"
@@ -63,7 +65,6 @@ export default function App() {
 						eyeRadius={option.qrOptions.eyeRadius}
 						eyeColor={color.eyeColor}
 					/>
-
 					<InputGroup>
 						<InputLeftElement pointerEvents="none">
 							<FaQrcode color="gray.300" />
@@ -72,23 +73,25 @@ export default function App() {
 							placeholder="Enter QR Content..."
 							variant="filled"
 							type="text"
-							onChange={handleQrChange}
+							onChange={qrValue.handleQrChange}
 						/>
 					</InputGroup>
-
 					<ImageFileUpload
 						name="imageFile"
 						acceptedFileTypes="image/*"
 						isRequired={true}
-						imageName={qrImage.imageName}
-						onImageChange={qrImage.handleImageChange}
-						currentImage={qrImage.currentImage}
-						removeImage={qrImage.removeImage}
+						imageName={image.imageName}
+						onImageChange={image.handleImageChange}
+						currentImage={image.currentImage}
+						removeImage={image.removeImage}
 					>
 						Choose Image
 					</ImageFileUpload>
-				</div>
-				<div className="p-4 gap-2">
+				</Box>
+				<Box
+					p="4"
+					gap="2"
+				>
 					<Heading
 						className="flex mb-4"
 						as="h6"
@@ -96,9 +99,8 @@ export default function App() {
 					>
 						Customize
 					</Heading>
-
 					<QrOptions />
-				</div>
+				</Box>
 			</Flex>
 		</Box>
 	);

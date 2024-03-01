@@ -4,7 +4,6 @@ import {
 	FormLabel,
 	Input,
 	InputGroup,
-	InputLeftElement,
 	FormErrorMessage,
 	Icon,
 	IconButton,
@@ -12,8 +11,6 @@ import {
 	ButtonGroup,
 } from '@chakra-ui/react';
 import { FiUpload, FiImage, FiX } from 'react-icons/fi';
-
-type inputEvent = React.ChangeEvent<HTMLInputElement>;
 
 interface FileUploadProps {
 	name: string;
@@ -25,7 +22,7 @@ interface FileUploadProps {
 interface FileUploadWithImageProps extends FileUploadProps {
 	currentImage: string | null;
 	imageName: string | null;
-	onImageChange: (e: inputEvent) => void;
+	onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	removeImage: () => void;
 }
 

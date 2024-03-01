@@ -15,6 +15,7 @@ export interface QrSliderProps {
 	min: number;
 	max: number;
 	step?: number;
+	isDisabled?: boolean;
 	children: React.ReactNode;
 }
 
@@ -23,6 +24,7 @@ export default function QrSlider({
 	min,
 	max,
 	step = 1,
+	isDisabled = false,
 	children,
 }: QrSliderProps) {
 	const [showTooltip, setShowTooltip] = useState(false);
@@ -39,6 +41,7 @@ export default function QrSlider({
 		>
 			{children}
 			<Slider
+				isDisabled={isDisabled}
 				aria-label={`${option} slider`}
 				step={step}
 				min={min}
@@ -69,7 +72,7 @@ export default function QrSlider({
 					color="white"
 					placement="top"
 					isOpen={showTooltip}
-					label={`${sliderValue}`}
+					label={sliderValue}
 				>
 					<SliderThumb />
 				</Tooltip>
