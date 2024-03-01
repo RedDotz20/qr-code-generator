@@ -1,6 +1,7 @@
-import QrSlider, { QrSliderProps } from './QrSlider';
 import { useImageUploadStore } from '../store/useImageUpload';
+import QrSlider, { QrSliderProps } from './QrSlider';
 import QrChromePicker from './QrChromePicker';
+import QrSelect from './QrSelect';
 
 const sliderQrOptions: QrSliderProps[] = [
 	{ children: 'QR Eye Radius', option: 'eyeRadius', min: 0, max: 25 },
@@ -26,6 +27,10 @@ export default function QrOptions() {
 	return (
 		<>
 			<QrChromePicker />
+
+			<QrSelect option="qrStyle" />
+			<QrSelect option="ecLevel" />
+			<QrSelect option="logoPaddingStyle" />
 
 			{sliderQrOptions.map((slide) => {
 				return (

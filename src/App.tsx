@@ -52,16 +52,16 @@ export default function App() {
 					</Heading>
 					<QRCode
 						value={qrValue.value as string}
-						qrStyle="dots"
+						qrStyle={option.qrOptions.qrStyle}
 						bgColor={color.bgColor}
 						fgColor={color.fgColor}
 						logoImage={image.currentImage ? image.currentImage : undefined}
 						logoWidth={option.qrOptions.width}
 						logoHeight={option.qrOptions.height}
-						ecLevel="M"
+						ecLevel={option.qrOptions.ecLevel}
 						removeQrCodeBehindLogo={true}
 						logoPadding={option.qrOptions.logoPadding}
-						logoPaddingStyle="circle"
+						logoPaddingStyle={option.qrOptions.logoPaddingStyle}
 						eyeRadius={option.qrOptions.eyeRadius}
 						eyeColor={color.eyeColor}
 					/>

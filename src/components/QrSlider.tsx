@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	Flex,
 	Slider,
@@ -8,7 +9,6 @@ import {
 	Tooltip,
 } from '@chakra-ui/react';
 import { NumericQrOptions, useQrOptionsStore } from '../store/useQrOptionStore';
-import { useState } from 'react';
 
 export interface QrSliderProps {
 	option: NumericQrOptions;

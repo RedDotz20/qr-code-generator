@@ -11,7 +11,7 @@ export interface QrChromePickerProps extends ChromePickerProps {
 
 type currentPickerType = QrChromePickerProps['variant'] | null;
 
-export default function QrChromePicker({ variant }: QrChromePickerProps) {
+export default function QrChromePicker() {
 	const [showPicker, setShowPicker] = useState(false);
 	const [currentPicker, setCurrentPicker] = useState<currentPickerType>(null);
 	const colorPicker = useColorPicker();

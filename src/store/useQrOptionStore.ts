@@ -3,9 +3,10 @@ import { create } from 'zustand';
 export interface QrOptionsType {
 	width: number;
 	height: number;
-	ecLevel: 'L' | 'M' | 'Q' | 'H' | undefined;
 	eyeRadius: number;
 	logoPadding: number;
+	qrStyle: 'squares' | 'dots';
+	ecLevel: 'L' | 'M' | 'Q' | 'H' | undefined;
 	logoPaddingStyle: 'circle' | 'square' | undefined;
 }
 
@@ -16,7 +17,7 @@ export type NumericQrOptions = keyof Pick<
 
 export type StringQrOptions = keyof Pick<
 	QrOptionsType,
-	'ecLevel' | 'logoPaddingStyle'
+	'qrStyle' | 'ecLevel' | 'logoPaddingStyle'
 >;
 
 export interface QrOptionsStore {
@@ -31,9 +32,10 @@ export const useQrOptionsStore = create<QrOptionsStore>((set) => ({
 	qrOptions: {
 		width: 30,
 		height: 30,
-		ecLevel: 'M',
 		eyeRadius: 2,
 		logoPadding: 0.8,
+		qrStyle: 'squares',
+		ecLevel: 'M',
 		logoPaddingStyle: 'circle',
 	},
 	setQrOption: (key, value) => {
