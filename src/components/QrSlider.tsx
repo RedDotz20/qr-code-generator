@@ -1,5 +1,4 @@
 import {
-	Box,
 	Flex,
 	Slider,
 	SliderFilledTrack,
@@ -11,7 +10,7 @@ import {
 import { NumericQrOptions, useQrOptionsStore } from '../store/useQrOptionStore';
 import { useState } from 'react';
 
-interface QrSliderProps {
+export interface QrSliderProps {
 	option: NumericQrOptions;
 	min: number;
 	max: number;

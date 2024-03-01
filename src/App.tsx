@@ -11,12 +11,9 @@ import {
 } from '@chakra-ui/react';
 import { useImageUpload } from './hooks/useImageUpload';
 import { useDebounce } from './hooks/useDebounceValue';
-import { useColorPicker } from './hooks/useColorPicker';
 import { useQrOptionsStore } from './store/useQrOptionStore';
+import { useColorPicker } from './store/useQrColorPicker';
 
-import QrChromePicker, {
-	QrChromePickerProps,
-} from './components/QrChromePicker';
 import ImageFileUpload from './components/ImageFileUpload';
 import QrOptions from './components/QrOptions';
 
@@ -25,38 +22,14 @@ type inputEvent = React.ChangeEvent<HTMLInputElement>;
 export default function App() {
 	const [qrvalue, setqrvalue] = useState('');
 	const { debouncedValue } = useDebounce(qrvalue);
-	const { colorState, ChangeBgColor, ChangeFgColor, ChangeEyeColor } =
-		useColorPicker();
+
+	const color = useColorPicker();
+	const option = useQrOptionsStore();
 	const qrImage = useImageUpload();
-
-	const { qrOptions } = useQrOptionsStore();
-
-	console.log(qrOptions.width);
 
 	const handleQrChange = (event: inputEvent) => {
 		setqrvalue(event.target.value);
 	};
-
-	const colorOptions: QrChromePickerProps[] = [
-		{
-			id: 1,
-			variant: 'bgColor',
-			color: colorState.bgColor,
-			onChange: (color: { hex: string }) => ChangeBgColor(color.hex),
-		},
-		{
-			id: 2,
-			variant: 'fgColor',
-			color: colorState.fgColor,
-			onChange: (color: { hex: string }) => ChangeFgColor(color.hex),
-		},
-		{
-			id: 3,
-			variant: 'eyeColor',
-			color: colorState.eyeColor,
-			onChange: (color: { hex: string }) => ChangeEyeColor(color.hex),
-		},
-	];
 
 	return (
 		<Box
@@ -68,7 +41,7 @@ export default function App() {
 				flexWrap="wrap"
 				justifyContent="center"
 			>
-				<div className="flex flex-col items-center justify-center p-4 gap-2">
+				<div className="flex flex-col items-center p-4 gap-2">
 					<Heading
 						as="h6"
 						size="sm"
@@ -78,17 +51,17 @@ export default function App() {
 					<QRCode
 						value={debouncedValue}
 						qrStyle="dots"
-						bgColor={colorState.bgColor}
-						fgColor={colorState.fgColor}
+						bgColor={color.bgColor}
+						fgColor={color.fgColor}
 						logoImage={qrImage.currentImage ? qrImage.currentImage : undefined}
-						logoWidth={30}
-						logoHeight={30}
+						logoWidth={option.qrOptions.width}
+						logoHeight={option.qrOptions.height}
 						ecLevel="M"
 						removeQrCodeBehindLogo={true}
-						logoPadding={0.8}
+						logoPadding={option.qrOptions.logoPadding}
 						logoPaddingStyle="circle"
-						eyeRadius={1}
-						eyeColor="#000000"
+						eyeRadius={option.qrOptions.eyeRadius}
+						eyeColor={color.eyeColor}
 					/>
 
 					<InputGroup>
@@ -102,27 +75,6 @@ export default function App() {
 							onChange={handleQrChange}
 						/>
 					</InputGroup>
-				</div>
-				<div className="p-4 gap-2">
-					<Heading
-						className="flex mb-"
-						as="h6"
-						size="sm"
-					>
-						Customize
-					</Heading>
-					<div className="flex gap-2 px-2 py-1">
-						{colorOptions.map((qrColorPicker) => {
-							return (
-								<QrChromePicker
-									key={qrColorPicker.id}
-									variant={qrColorPicker.variant}
-									color={qrColorPicker.color}
-									onChange={qrColorPicker.onChange}
-								/>
-							);
-						})}
-					</div>
 
 					<ImageFileUpload
 						name="imageFile"
@@ -135,6 +87,16 @@ export default function App() {
 					>
 						Choose Image
 					</ImageFileUpload>
+				</div>
+				<div className="p-4 gap-2">
+					<Heading
+						className="flex mb-4"
+						as="h6"
+						size="sm"
+					>
+						Customize
+					</Heading>
+
 					<QrOptions />
 				</div>
 			</Flex>
