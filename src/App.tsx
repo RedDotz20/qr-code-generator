@@ -1,11 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
-
+import { FaQrcode } from 'react-icons/fa6';
+import {
+	Box,
+	Flex,
+	Heading,
+	Input,
+	InputGroup,
+	InputLeftElement,
+} from '@chakra-ui/react';
 import { useImageUpload } from './hooks/useImageUpload';
 import { useDebounce } from './hooks/useDebounceValue';
 import { useColorPicker } from './hooks/useColorPicker';
+import { useQrOptionsStore } from './store/useQrOptionStore';
 
-import QrChromePicker from './components/QrChromePicker';
+import QrChromePicker, {
+	QrChromePickerProps,
+} from './components/QrChromePicker';
+import ImageFileUpload from './components/ImageFileUpload';
+import QrOptions from './components/QrOptions';
 
 type inputEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -16,74 +29,115 @@ export default function App() {
 		useColorPicker();
 	const qrImage = useImageUpload();
 
-	const handleChange = (event: inputEvent) => {
+	const { qrOptions } = useQrOptionsStore();
+
+	console.log(qrOptions.width);
+
+	const handleQrChange = (event: inputEvent) => {
 		setqrvalue(event.target.value);
 	};
 
+	const colorOptions: QrChromePickerProps[] = [
+		{
+			id: 1,
+			variant: 'bgColor',
+			color: colorState.bgColor,
+			onChange: (color: { hex: string }) => ChangeBgColor(color.hex),
+		},
+		{
+			id: 2,
+			variant: 'fgColor',
+			color: colorState.fgColor,
+			onChange: (color: { hex: string }) => ChangeFgColor(color.hex),
+		},
+		{
+			id: 3,
+			variant: 'eyeColor',
+			color: colorState.eyeColor,
+			onChange: (color: { hex: string }) => ChangeEyeColor(color.hex),
+		},
+	];
+
 	return (
-		<div className="flex min-h-screen flex-col items-center justify-center p-2">
-			<h1 className="font-semibold">QR Code</h1>
-
-			<input
-				type="text"
-				className="mb-4 border-2 border-black"
-				onChange={handleChange}
-			/>
-
-			<QRCode
-				value={debouncedValue}
-				qrStyle="dots"
-				bgColor={colorState.bgColor}
-				fgColor={colorState.fgColor}
-				logoImage={qrImage.currentImage ? qrImage.currentImage : undefined}
-				logoWidth={30}
-				logoHeight={30}
-				ecLevel="M"
-				removeQrCodeBehindLogo={true}
-				logoPadding={0.8}
-				logoPaddingStyle="circle"
-				eyeRadius={4}
-				eyeColor="#000000"
-			/>
-
-			<div className="flex gap-2 border-2 border-black px-2 py-1">
-				<QrChromePicker
-					variant="bgColor"
-					color={colorState.bgColor}
-					onChange={(color: { hex: string }) => ChangeBgColor(color.hex)}
-				/>
-
-				<QrChromePicker
-					variant="fgColor"
-					color={colorState.fgColor}
-					onChange={(color: { hex: string }) => ChangeFgColor(color.hex)}
-				/>
-
-				<QrChromePicker
-					variant="eyeColor"
-					color={colorState.eyeColor}
-					onChange={(color: { hex: string }) => ChangeEyeColor(color.hex)}
-				/>
-			</div>
-			<input
-				type="file"
-				onChange={qrImage.handleImageChange}
-			/>
-
-			<select
-				name=""
-				id=""
+		<Box
+			as="main"
+			className="min-h-screen items-center justify-center p-2"
+		>
+			<Heading className="font-semibold">QR Code Generator</Heading>
+			<Flex
+				flexWrap="wrap"
+				justifyContent="center"
 			>
-				<option value="volvo">Volvo</option>
-				<option value="saab">Saab</option>
-				<option value="mercedes">Mercedes</option>
-				<option value="audi">Audi</option>
-			</select>
+				<div className="flex flex-col items-center justify-center p-4 gap-2">
+					<Heading
+						as="h6"
+						size="sm"
+					>
+						Preview
+					</Heading>
+					<QRCode
+						value={debouncedValue}
+						qrStyle="dots"
+						bgColor={colorState.bgColor}
+						fgColor={colorState.fgColor}
+						logoImage={qrImage.currentImage ? qrImage.currentImage : undefined}
+						logoWidth={30}
+						logoHeight={30}
+						ecLevel="M"
+						removeQrCodeBehindLogo={true}
+						logoPadding={0.8}
+						logoPaddingStyle="circle"
+						eyeRadius={1}
+						eyeColor="#000000"
+					/>
 
-			<div className="flex gap-2 m-2">
-				<button onClick={qrImage.removeImage}>Remove Image</button>
-				<button>test</button>
-			</div>
-		</div>
+					<InputGroup>
+						<InputLeftElement pointerEvents="none">
+							<FaQrcode color="gray.300" />
+						</InputLeftElement>
+						<Input
+							placeholder="Enter QR Content..."
+							variant="filled"
+							type="text"
+							onChange={handleQrChange}
+						/>
+					</InputGroup>
+				</div>
+				<div className="p-4 gap-2">
+					<Heading
+						className="flex mb-"
+						as="h6"
+						size="sm"
+					>
+						Customize
+					</Heading>
+					<div className="flex gap-2 px-2 py-1">
+						{colorOptions.map((qrColorPicker) => {
+							return (
+								<QrChromePicker
+									key={qrColorPicker.id}
+									variant={qrColorPicker.variant}
+									color={qrColorPicker.color}
+									onChange={qrColorPicker.onChange}
+								/>
+							);
+						})}
+					</div>
+
+					<ImageFileUpload
+						name="imageFile"
+						acceptedFileTypes="image/*"
+						isRequired={true}
+						imageName={qrImage.imageName}
+						onImageChange={qrImage.handleImageChange}
+						currentImage={qrImage.currentImage}
+						removeImage={qrImage.removeImage}
+					>
+						Choose Image
+					</ImageFileUpload>
+					<QrOptions />
+				</div>
+			</Flex>
+		</Box>
 	);
 }

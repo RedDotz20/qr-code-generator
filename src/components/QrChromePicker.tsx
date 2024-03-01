@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Button } from '@chakra-ui/react';
 import { ChromePicker, ChromePickerProps } from 'react-color';
 
-interface QrChromePickerProps extends ChromePickerProps {
+export interface QrChromePickerProps extends ChromePickerProps {
+	id?: number;
 	variant: 'bgColor' | 'fgColor' | 'eyeColor';
 }
 
@@ -13,18 +15,26 @@ export default function QrChromePicker({
 	const togglePicker = () => setShowPicker((prev) => !prev);
 
 	const variantName = {
-		bgColor: 'Background Color',
-		fgColor: 'Foreground Color',
+		bgColor: 'BG Color',
+		fgColor: 'FG Color',
 		eyeColor: 'Eye Color',
 	};
 
 	return (
 		<div className="relative flex flex-col gap-2 justify-center items-center">
-			<button onClick={togglePicker}>{variantName[variant]}</button>
+			<Button
+				colorScheme="blue"
+				size="sm"
+				onClick={togglePicker}
+			>
+				{variantName[variant]}
+			</Button>
+
 			{showPicker && (
-				<div className="absolute top-8">
-					<ChromePicker {...rest} />
-				</div>
+				<ChromePicker
+					className="absolute top-8 z-40"
+					{...rest}
+				/>
 			)}
 		</div>
 	);
