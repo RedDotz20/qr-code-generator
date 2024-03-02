@@ -27,6 +27,8 @@ export default function App() {
         link.href = imgData;
         link.download = 'qrcode.png';
         link.click();
+
+        alert('QR Code saved successfully!');
       });
     }
   };
