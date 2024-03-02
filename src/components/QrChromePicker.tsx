@@ -1,10 +1,16 @@
 import { useState } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
 import { ChromePicker, ChromePickerProps } from 'react-color';
 import { useColorPicker } from '../store/useQrColorPicker';
+import {
+	IoColorWandOutline,
+	IoColorWand,
+	IoColorWandSharp,
+} from 'react-icons/io5';
 
 export interface QrChromePickerProps extends ChromePickerProps {
 	id?: number;
+	icon?: JSX.Element;
 	variantName?: 'BG Color' | 'FG Color' | 'Eye Color';
 	variant?: 'bgColor' | 'fgColor' | 'eyeColor';
 }
@@ -21,6 +27,7 @@ export default function QrChromePicker() {
 			id: 1,
 			variant: 'bgColor',
 			variantName: 'BG Color',
+			icon: <IoColorWandOutline />,
 			color: colorPicker.bgColor,
 			onChange: (color: { hex: string }) =>
 				colorPicker.changeBgColor(color.hex),
@@ -29,6 +36,7 @@ export default function QrChromePicker() {
 			id: 2,
 			variant: 'fgColor',
 			variantName: 'FG Color',
+			icon: <IoColorWand />,
 			color: colorPicker.fgColor,
 			onChange: (color: { hex: string }) =>
 				colorPicker.changeFgColor(color.hex),
@@ -37,6 +45,7 @@ export default function QrChromePicker() {
 			id: 3,
 			variant: 'eyeColor',
 			variantName: 'Eye Color',
+			icon: <IoColorWandSharp />,
 			color: colorPicker.eyeColor,
 			onChange: (color: { hex: string }) =>
 				colorPicker.changeEyeColor(color.hex),
@@ -56,22 +65,29 @@ export default function QrChromePicker() {
 	};
 
 	return (
-		<div className="flex gap-2 justify-center items-center">
+		<Flex
+			justifyContent="center"
+			alignItems="center"
+			gap={2}
+			mb={2}
+		>
 			{colorOptions.map((item) => {
 				const isActive = currentPicker === item.variant && showPicker;
-
+				const handlePicker = () => togglePicker(item.variant);
 				return (
 					<div
 						key={item.id}
 						className="relative"
 					>
 						<Button
+							maxWidth={84}
+							leftIcon={item.icon}
 							variant={isActive ? 'outline' : 'solid'}
 							border={isActive ? '1px' : 'hidden'}
 							borderColor={isActive ? 'blue.500' : undefined}
 							colorScheme="blue"
-							size="sm"
-							onClick={() => togglePicker(item.variant)}
+							size="xs"
+							onClick={handlePicker}
 						>
 							{item.variantName}
 						</Button>
@@ -86,6 +102,6 @@ export default function QrChromePicker() {
 					</div>
 				);
 			})}
-		</div>
+		</Flex>
 	);
 }

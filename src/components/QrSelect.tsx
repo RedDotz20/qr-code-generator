@@ -1,5 +1,5 @@
-import { useState, ChangeEvent } from 'react';
-import { Select, VStack } from '@chakra-ui/react';
+import { ChangeEvent } from 'react';
+import { Flex, Select, Text, VStack } from '@chakra-ui/react';
 import {
 	useQrOptionsStore,
 	QrOptionsType,
@@ -8,6 +8,7 @@ import {
 
 export interface QrSelectProps {
 	option: StringQrOptions;
+	name: string;
 }
 
 interface qrSelectionTypes {
@@ -16,7 +17,7 @@ interface qrSelectionTypes {
 	logoPaddingStyle: QrOptionsType['logoPaddingStyle'][];
 }
 
-export default function QrSelect({ option }: QrSelectProps) {
+export default function QrSelect({ option, name }: QrSelectProps) {
 	const { qrOptions, setQrOption } = useQrOptionsStore();
 
 	const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -33,8 +34,17 @@ export default function QrSelect({ option }: QrSelectProps) {
 	const selectedOption = qrSelection[option];
 
 	return (
-		<VStack spacing={4}>
+		<Flex
+			width="full"
+			gap={1}
+			direction="column"
+			align="flex-start"
+			justifyContent="space-between"
+		>
+			<Text fontSize="xs">{name}</Text>
 			<Select
+				size="xs"
+				variant="filled"
 				value={qrOptions[option]}
 				onChange={handleSelectChange}
 			>
@@ -49,6 +59,6 @@ export default function QrSelect({ option }: QrSelectProps) {
 					);
 				})}
 			</Select>
-		</VStack>
+		</Flex>
 	);
 }

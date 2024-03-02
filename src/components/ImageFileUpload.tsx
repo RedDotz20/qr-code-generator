@@ -9,8 +9,10 @@ import {
 	IconButton,
 	Button,
 	ButtonGroup,
+	Tooltip,
 } from '@chakra-ui/react';
 import { FiUpload, FiImage, FiX } from 'react-icons/fi';
+import { useQrOptionsStore } from '../store/useQrOptionStore';
 
 interface FileUploadProps {
 	name: string;
@@ -38,34 +40,48 @@ export default function ImageFileUpload({
 }: FileUploadWithImageProps) {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const handleClick = () => inputRef.current?.click();
+	const isImagePresent = currentImage ? false : true;
 
 	return (
 		<FormControl
 			isRequired={isRequired}
-			className="flex flex-col max-w-[180px]"
+			display="flex"
+			flexDirection="column"
 		>
 			<FormLabel htmlFor={name}>{children}</FormLabel>
 			<InputGroup>
 				<ButtonGroup
+					maxWidth={234}
+					spacing={1}
 					isAttached={imageName ? true : false}
 					variant="solid"
+					flex="1"
 				>
 					<Button
 						onClick={handleClick}
 						colorScheme="blue"
+						fontSize={imageName ? 'xs' : 'md'}
 						leftIcon={<Icon as={currentImage ? FiImage : FiUpload} />}
+						flex="1"
 					>
 						{imageName ? imageName : 'Upload Image'}
 					</Button>
-					{imageName && (
+
+					<Tooltip
+						hasArrow
+						placement="top"
+						label="Remove Image"
+						bg="red.500"
+					>
 						<IconButton
-							color="red.500"
-							variant="outlined"
+							isDisabled={isImagePresent}
+							colorScheme="red"
+							variant="solid"
 							icon={<FiX />}
 							aria-label="Remove Image"
 							onClick={removeImage}
 						/>
-					)}
+					</Tooltip>
 				</ButtonGroup>
 				<Input
 					type="file"
@@ -76,7 +92,6 @@ export default function ImageFileUpload({
 					accept={acceptedFileTypes}
 				/>
 			</InputGroup>
-			<FormErrorMessage></FormErrorMessage>
 		</FormControl>
 	);
 }

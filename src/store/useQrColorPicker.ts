@@ -14,7 +14,7 @@ interface ColorPickerStore extends ColorPickerState {
 }
 
 export const useColorPicker = create<ColorPickerStore>((set) => ({
-	bgColor: '#CECECE',
+	bgColor: '#FFFFFF',
 	fgColor: '#080808',
 	eyeColor: '#000000',
 	setColor: (newState) => set((state) => ({ ...state, ...newState })),

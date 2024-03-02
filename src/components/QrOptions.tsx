@@ -2,6 +2,7 @@ import { useImageUploadStore } from '../store/useImageUpload';
 import QrSlider, { QrSliderProps } from './QrSlider';
 import QrChromePicker from './QrChromePicker';
 import QrSelect from './QrSelect';
+import { Flex } from '@chakra-ui/react';
 
 const sliderQrOptions: QrSliderProps[] = [
 	{ children: 'QR Eye Radius', option: 'eyeRadius', min: 0, max: 25 },
@@ -28,9 +29,20 @@ export default function QrOptions() {
 		<>
 			<QrChromePicker />
 
-			<QrSelect option="qrStyle" />
-			<QrSelect option="ecLevel" />
-			<QrSelect option="logoPaddingStyle" />
+			<Flex gap={2}>
+				<QrSelect
+					option="qrStyle"
+					name="QR Style"
+				/>
+				<QrSelect
+					option="ecLevel"
+					name="EC Level"
+				/>
+				<QrSelect
+					option="logoPaddingStyle"
+					name="Padding Style"
+				/>
+			</Flex>
 
 			{sliderQrOptions.map((slide) => {
 				return (

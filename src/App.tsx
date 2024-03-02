@@ -1,7 +1,11 @@
+import html2canvas from 'html2canvas';
+import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
+import { IoSaveOutline } from 'react-icons/io5';
 import { FaQrcode } from 'react-icons/fa6';
 import {
 	Box,
+	Button,
 	Flex,
 	Heading,
 	Input,
@@ -17,32 +21,46 @@ import ImageFileUpload from './components/ImageFileUpload';
 import QrOptions from './components/QrOptions';
 
 export default function App() {
+	const qrCodeRef = useRef(null);
 	const qrValue = useQrValue();
 	const option = useQrOptionsStore();
 	const image = useImageUploadStore();
 	const color = useColorPicker();
 
+	const saveAsImage = () => {
+		if (qrCodeRef.current) {
+			html2canvas(qrCodeRef.current).then((canvas) => {
+				const imgData = canvas.toDataURL('image/png');
+				const link = document.createElement('a');
+				link.href = imgData;
+				link.download = 'qrcode.png';
+				link.click();
+			});
+		}
+	};
+
 	return (
-		<Box
-			as="main"
-			minH="100vh"
-			display="flex"
-			flexDirection="column"
-			alignItems="center"
-			justifyContent="center"
-			p="2"
-		>
-			<Heading fontWeight="semibold">QR Code Generator</Heading>
+		<>
+			<Heading
+				fontWeight="semibold"
+				mb={4}
+			>
+				QR Code Generator
+			</Heading>
 			<Flex
 				flexWrap="wrap"
 				justifyContent="center"
+				className="bg-slate-300"
+				p={8}
+				gap={6}
 			>
 				<Box
 					display="flex"
 					flexDirection="column"
 					alignItems="center"
-					p="4"
-					gap="2"
+					gap={2}
+					px={2}
+					maxWidth={250}
 				>
 					<Heading
 						as="h6"
@@ -50,21 +68,23 @@ export default function App() {
 					>
 						Preview
 					</Heading>
-					<QRCode
-						value={qrValue.value as string}
-						qrStyle={option.qrOptions.qrStyle}
-						bgColor={color.bgColor}
-						fgColor={color.fgColor}
-						logoImage={image.currentImage ? image.currentImage : undefined}
-						logoWidth={option.qrOptions.width}
-						logoHeight={option.qrOptions.height}
-						ecLevel={option.qrOptions.ecLevel}
-						removeQrCodeBehindLogo={true}
-						logoPadding={option.qrOptions.logoPadding}
-						logoPaddingStyle={option.qrOptions.logoPaddingStyle}
-						eyeRadius={option.qrOptions.eyeRadius}
-						eyeColor={color.eyeColor}
-					/>
+					<Box ref={qrCodeRef}>
+						<QRCode
+							value={qrValue.value as string}
+							qrStyle={option.qrOptions.qrStyle}
+							bgColor={color.bgColor}
+							fgColor={color.fgColor}
+							logoImage={image.currentImage ? image.currentImage : undefined}
+							logoWidth={option.qrOptions.width}
+							logoHeight={option.qrOptions.height}
+							ecLevel={option.qrOptions.ecLevel}
+							removeQrCodeBehindLogo={true}
+							logoPadding={option.qrOptions.logoPadding}
+							logoPaddingStyle={option.qrOptions.logoPaddingStyle}
+							eyeRadius={option.qrOptions.eyeRadius}
+							eyeColor={color.eyeColor}
+						/>
+					</Box>
 					<InputGroup>
 						<InputLeftElement pointerEvents="none">
 							<FaQrcode color="gray.300" />
@@ -87,13 +107,21 @@ export default function App() {
 					>
 						Choose Image
 					</ImageFileUpload>
+					<Button
+						// px={4}
+						width="full"
+						leftIcon={<IoSaveOutline />}
+						onClick={saveAsImage}
+						colorScheme="blue"
+						mt="2"
+					>
+						Save QR Code
+					</Button>
 				</Box>
-				<Box
-					p="4"
-					gap="2"
-				>
+				<Box gap="2">
 					<Heading
-						className="flex mb-4"
+						display="flex"
+						mb={2}
 						as="h6"
 						size="sm"
 					>
@@ -102,6 +130,6 @@ export default function App() {
 					<QrOptions />
 				</Box>
 			</Flex>
-		</Box>
+		</>
 	);
 }

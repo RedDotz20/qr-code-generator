@@ -41,6 +41,7 @@ export default function QrSlider({
 		>
 			{children}
 			<Slider
+				size="md"
 				isDisabled={isDisabled}
 				aria-label={`${option} slider`}
 				step={step}
