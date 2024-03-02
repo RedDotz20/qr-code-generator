@@ -48,6 +48,7 @@ export default function ImageFileUpload({
           <Button
             onClick={handleClick}
             colorScheme="blue"
+            color="black"
             fontSize={imageName ? 'xs' : 'md'}
             leftIcon={<Icon as={currentImage ? FiImage : FiUpload} />}
             flex="1"
@@ -60,6 +61,7 @@ export default function ImageFileUpload({
               isDisabled={isImagePresent}
               colorScheme="red"
               variant="solid"
+              color="black"
               icon={<FiX />}
               aria-label="Remove Image"
               onClick={removeImage}

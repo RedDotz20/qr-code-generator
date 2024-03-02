@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { Flex, Select, Text } from '@chakra-ui/react';
+import { Flex, FormLabel, Select } from '@chakra-ui/react';
 import { useQrOptionsStore, QrOptionsType, StringQrOptions } from '../store/useQrOptionStore';
 
 export interface QrSelectProps {
@@ -31,8 +31,17 @@ export default function QrSelect({ option, name }: QrSelectProps) {
 
   return (
     <Flex width="full" gap={1} direction="column" align="flex-start" justifyContent="space-between">
-      <Text fontSize="xs">{name}</Text>
-      <Select size="xs" variant="filled" value={qrOptions[option]} onChange={handleSelectChange}>
+      <FormLabel mb={0} htmlFor={option} fontSize="x-small">
+        {name}
+      </FormLabel>
+      <Select
+        id={option}
+        name={name}
+        size="xs"
+        variant="filled"
+        value={qrOptions[option]}
+        onChange={handleSelectChange}
+      >
         {selectedOption.map((option, index) => {
           return (
             <option key={index} value={option}>

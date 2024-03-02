@@ -73,6 +73,7 @@ export default function QrChromePicker() {
               border={isActive ? '1px' : 'hidden'}
               borderColor={isActive ? 'blue.500' : undefined}
               colorScheme="blue"
+              color="black"
               size="xs"
               onClick={handlePicker}
             >
