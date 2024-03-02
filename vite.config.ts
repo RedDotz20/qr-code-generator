@@ -4,6 +4,6 @@ import eslint from 'vite-plugin-eslint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/qrcode-generator/',
+  base: '/qr-code-generator/',
   plugins: [react(), eslint()],
 });
