@@ -1,9 +1,9 @@
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
+import { Box, Button, Flex, Heading, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { IoSaveOutline } from 'react-icons/io5';
 import { FaQrcode } from 'react-icons/fa6';
-import { Box, Button, Flex, Heading, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { useImageUploadStore } from './store/useImageUpload';
 import { useQrOptionsStore } from './store/useQrOptionStore';
 import { useColorPicker } from './store/useQrColorPicker';
