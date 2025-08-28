@@ -69,7 +69,7 @@ export default function QrChromePicker() {
             <Button
               maxWidth={84}
               leftIcon={item.icon}
-              variant={isActive ? 'outline' : 'solid'}
+              variant={isActive ? 'outline-solid' : 'solid'}
               border={isActive ? '1px' : 'hidden'}
               borderColor={isActive ? 'blue.500' : undefined}
               colorScheme="blue"
@@ -81,7 +81,7 @@ export default function QrChromePicker() {
             </Button>
 
             {showPicker && currentPicker === item.variant && (
-              <ChromePicker className="absolute z-[999] top-10 right-0" color={item.color} onChange={item.onChange} />
+              <ChromePicker className="absolute z-999 top-10 right-0" color={item.color} onChange={item.onChange} />
             )}
           </div>
         );
